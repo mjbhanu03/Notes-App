@@ -1,15 +1,20 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
-function NoteForm({addNote}) {
+function NoteForm({addOrEditNote, editNote}) {
   const [note, setNote] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if(!note.trim()) return;
-    console.log(note)
-    addNote(note)
+    addOrEditNote(note)
     setNote('')
   } 
+
+  useEffect(() => {
+    if(editNote){
+      setNote(editNote.text)
+    }
+  }, [editNote])
 
   return (
     <>
@@ -19,9 +24,9 @@ function NoteForm({addNote}) {
           placeholder="Enter Your Note..."
           className="border p-2 w-full"
           />
-        <button type="submit" className="bg-blue-500 text-white px-4 py-2 mt-2">
-          Add Note
-        </button>
+      <button type="submit" className="bg-blue-500 text-white p-2 w-full">
+        {editNote ? "Update Note" : "Add Note"}
+      </button>
       </form>
     </>
   )
